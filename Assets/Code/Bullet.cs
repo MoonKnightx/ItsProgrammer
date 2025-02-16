@@ -87,6 +87,11 @@ public class Bullet : MonoBehaviour
     }
 
 
+    private void OnBecameInvisible() {
+        Destroy(gameObject);
+    }
+
+
     //protected virtual void MyStart()
     //{
 
@@ -94,10 +99,10 @@ public class Bullet : MonoBehaviour
 
     //protected virtual void MyUpdate()
     //{
-        
+
     //}
     //protected virtual void MyFixedUpdate()
     //{
-        
+
     //}
 }

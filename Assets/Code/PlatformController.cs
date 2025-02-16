@@ -19,7 +19,7 @@ public class PlatformController : MonoBehaviour
     bool jumpInput = false;
 
     // Cache direzione di mira
-    Vector3 aimVector;
+    private Vector3 aimVector;
 
     // Layer che il player considera pavimento
     public LayerMask groundLayer;
@@ -29,6 +29,9 @@ public class PlatformController : MonoBehaviour
 
     //Rocket base per creare altri missili
     public Rocket rocketTemplate;
+
+    // chace per i proiettile
+    private Bullet currentBullet;
 
     //timer per la state machine
     private float stateTimer;
@@ -228,21 +231,29 @@ public class PlatformController : MonoBehaviour
             // Creo un'istanza (faccio una copia) del proiettile e la "sparo"
             // Instantiate(bulletTemplate, aimVector, Quaternion.identity).SetActive(true);
 
-            Bullet tBullet = Instantiate(bulletTemplate);
+            currentBullet = Instantiate(bulletTemplate);
             Vector3 shootVector = aimVector - transform.position;
-            tBullet.transform.position = transform.position + shootVector.normalized;
-            tBullet.gameObject.SetActive(true);
-            tBullet.Shoot(shootVector);
+            currentBullet.transform.position = transform.position + shootVector.normalized;
+            currentBullet.gameObject.SetActive(true);
+            currentBullet.Shoot(shootVector);
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            Bullet tRocket = Instantiate(rocketTemplate);
+            currentBullet = Instantiate(rocketTemplate);
             Vector3 shootVector = aimVector - transform.position;
-            tRocket.transform.position = transform.position + shootVector.normalized;
-            tRocket.gameObject.SetActive(true);
-            tRocket.Shoot(shootVector);
+            currentBullet.transform.position = transform.position + shootVector.normalized;
+            currentBullet.gameObject.SetActive(true);
+            currentBullet.Shoot(shootVector);
 
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            if (currentBullet != null)
+            {
+                Destroy(currentBullet.gameObject);
+            }
         }
 
     }
