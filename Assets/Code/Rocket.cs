@@ -10,6 +10,7 @@ public class Rocket : Bullet
 
     private enum State { IDLE = 0, FLYING = 1, EXPLODING = 2 };
 
+    //lo inizializzo in idle anche se poi non lo uso
     private State currentState = State.IDLE;
 
     private float stateTimer;
@@ -26,6 +27,8 @@ public class Rocket : Bullet
         stateTimer = 0;
     }
 
+
+    //piccola state machine
     private void StateUpdate()
     {
         stateTimer = Time.deltaTime;
@@ -37,9 +40,12 @@ public class Rocket : Bullet
                 FlyingUpdate();
                 break;
             case State.EXPLODING:
+                ExplodingKitten();
                 break;
         }
     }
+
+    
 
     private void FlyingUpdate()
     {
@@ -48,6 +54,8 @@ public class Rocket : Bullet
         // aggiorno la poszione del mouse
         tMouseScreenToWorldPos = Input.mousePosition;
         tMouseScreenToWorldPos.z = transform.position.z - Camera.main.transform.position.z;
+
+
         //per qualche motivo danno fastidio
         //tMouseScreenToWorldPos.x = transform.position.x - Camera.main.transform.position.x;
         //tMouseScreenToWorldPos.y = transform.position.y - Camera.main.transform.position.y;
@@ -57,11 +65,11 @@ public class Rocket : Bullet
         // calcolo la direzione del vettore
         flyingVector = (muoseVector - transform.position).normalized;
 
+        myRigidbody.transform.up = myRigidbody.linearVelocity;
+
         myRigidbody.AddForce(flyingVector * 100, ForceMode.Acceleration);
 
     }
-
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -77,12 +85,18 @@ public class Rocket : Bullet
     }
 
 
+    private void ExplodingKitten()
+    {
+
+    }
+
+    //utilizzo un echo routine che si occupa di ritardare l'homing del razzo per dagli un effetto più realistico
     IEnumerator Flying_EC() 
     {
 
         //aspetta 0.5 secondi prima di passare allo stato di Flying
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
 
         ChangeState(State.FLYING);
     }
