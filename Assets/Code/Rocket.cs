@@ -48,15 +48,16 @@ public class Rocket : Bullet
         // aggiorno la poszione del mouse
         tMouseScreenToWorldPos = Input.mousePosition;
         tMouseScreenToWorldPos.z = transform.position.z - Camera.main.transform.position.z;
-        tMouseScreenToWorldPos.x = transform.position.x - Camera.main.transform.position.x;
-        tMouseScreenToWorldPos.y = transform.position.y - Camera.main.transform.position.y;
+        //per qualche motivo danno fastidio
+        //tMouseScreenToWorldPos.x = transform.position.x - Camera.main.transform.position.x;
+        //tMouseScreenToWorldPos.y = transform.position.y - Camera.main.transform.position.y;
 
         muoseVector = Camera.main.ScreenToWorldPoint(tMouseScreenToWorldPos);
 
         // calcolo la direzione del vettore
         flyingVector = (muoseVector - transform.position).normalized;
 
-        myRigidbody.AddForce(flyingVector * bulletSpeed, ForceMode.Acceleration);
+        myRigidbody.AddForce(flyingVector * 100, ForceMode.Acceleration);
 
     }
 
